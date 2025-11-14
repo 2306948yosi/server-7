@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>クライアントサイド</title>
+    <link href="style.css" rel="stylesheet" />
+    <script src="https://unpkg.com/petite-vue" defer init></script>
+  </head>
+
+  <body v-scope="dataset()" @vue:mounted="init">
+    <section>
+      <div id="create">
+        <!-- prettier-ignore -->
+        <form>
+          <div class="row">
+            <label>名前：</label><input v-model="inputs.name" />
+          </div>
+          <div class="row">
+            <label>タイプ：</label>
+            <div class="radio">
+              <input type="radio" name="type" v-model="inputs.type" value="水" />水 &nbsp;
+              <input type="radio" name="type" v-model="inputs.type" value="炎" />炎 &nbsp;
+              <input type="radio" name="type" v-model="inputs.type" value="草" />草 &nbsp;
+              <input type="radio" name="type" v-model="inputs.type" value="氷" />氷 &nbsp;
+              <input type="radio" name="type" v-model="inputs.type" value="悪" checked />悪
+            </div>
+          </div>
+          <div class="row">
+            <label>レベル：</label>
+            <input type="number" v-model="inputs.level" />
+          </div>
+          <div class="row">
+            <label>愛称：</label>
+            <input v-model="inputs.nickname" />
+          </div>
+          <div class="cap">
+            <button @click.prevent="createData">作成</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="display">
+        <table>
+          <caption>
+            ポケモン一覧
+          </caption>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>名前</th>
+            </tr>
+          </thead>
+          <tbody v-if="list">
+            <tr v-for="item of list">
+              <td>{{item.id}}</td>
+              <td>{{item.name}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <div id="retrieve">
+        <!-- prettier-ignore -->
+        <form>
+          <div class="row">
+            <label>ID: </label>
+            <input v-model="queryId" />
+          </div>
+          <div class="cap">
+            <button @click.prevent="retrieveData">詳細の取得</button>
+          </div>
+        </form>
+
+        <!-- prettier-ignore -->
+        <table id="detail">
+          <caption>
+            詳細情報
+          </caption>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>名前</th>
+              <th>タイプ</th>
+              <th>レベル</th>
+              <th>愛称</th>
+            </tr>
+          </thead>
+          <tbody v-if="selectedRecord">
+            <tr>
+              <td>{{selectedRecord.id}}</td>
+              <td>{{selectedRecord.name}}</td>
+              <td>{{selectedRecord.type}}</td>
+              <td>{{selectedRecord.level}}</td>
+              <td>{{selectedRecord.nickname}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="update">
+        <form>
+          <div class="row">
+            <label>レベル：</label>
+            <input type="number" v-model="update.level" />
+          </div>
+          <div class="row">
+            <label>愛称：</label>
+            <input v-model="update.nickname" />
+          </div>
+          <div class="cap">
+            <button @click.prevent="updateData">このレコードを更新</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="delete">
+        <button @click.prevent="deleteData">このレコードを削除</button>
+      </div>
+    </section>
+
+    <!-- ↓この機能は本来推奨されない -->
+    <div id="deleteAll">
+      <button @click.prevent="deleteDataAll">すべてのレコードを削除</button>
+    </div>
+  </body>
+
+  <script src="client.js"></script>
+</html>
